@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import {Component, Input, Output} from '@angular/core';
 import { Hero } from "../../hero";
 import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
@@ -12,6 +12,7 @@ import { HeroService } from '../hero.service';
 })
 export class HeroDetailComponent {
   @Input() hero?: Hero;
+  @Output() heroes: Hero[] = []
 
   constructor(
     private route: ActivatedRoute,
@@ -31,5 +32,12 @@ export class HeroDetailComponent {
 
   goBack(): void {
     this.location.back();
+  }
+
+  save(): void {
+    if (this.hero) {
+      this.heroService.updateHero(this.hero)
+        .subscribe(() => this.goBack());
+    }
   }
 }
